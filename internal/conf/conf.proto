@@ -1,0 +1,38 @@
+syntax = "proto3";
+package kratos.api;
+
+option go_package = "app/internal/conf;conf";
+
+import "google/protobuf/duration.proto";
+
+message Bootstrap {
+  Server server = 1;
+  Data data = 2;
+}
+
+message Server {
+  message Consumer {
+    repeated string topics = 1;
+    string group = 2;
+  }
+  message Kafka {
+    repeated string brokers = 1;
+    repeated Consumer consumers = 2;
+  }
+  Kafka kafka = 1;
+}
+
+message Data {
+  message Database {
+    string driver = 1;
+    string source = 2;
+  }
+  message Redis {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration read_timeout = 3;
+    google.protobuf.Duration write_timeout = 4;
+  }
+  Database database = 1;
+  Redis redis = 2;
+}
